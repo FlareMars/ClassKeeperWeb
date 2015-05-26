@@ -43,7 +43,7 @@ query.find({
                 temp = '0' + temp;
             }
             var subtemp = temp.substr(0, 5);
-            var result = prefix + subtemp + "xx";
+            var result = prefix + subtemp;
             return result;
         }
         
