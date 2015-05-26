@@ -16,7 +16,7 @@ app.get('/hello', function(req, res) {
 var fs = require('fs');
 app.post('/upload', function(req, res){
   var iconFile = req.files.iconImage;
-  var targetUserId = req.params.targetUserId;
+  var targetUserId = req.body.targetUserId;
   if(iconFile){
     fs.readFile(iconFile.path, function(err, data){
       if(err)
