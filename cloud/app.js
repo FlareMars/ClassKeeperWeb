@@ -16,6 +16,7 @@ app.get('/hello', function(req, res) {
 var fs = require('fs');
 app.post('/upload', function(req, res){
   var iconFile = req.files.iconImage;
+  var targetUserId = req.params.targetUserId;
   if(iconFile){
     fs.readFile(iconFile.path, function(err, data){
       if(err)
@@ -23,7 +24,9 @@ app.post('/upload', function(req, res){
       var base64Data = data.toString('base64');
       var theFile = new AV.File(iconFile.name, {base64: base64Data});
       theFile.save().then(function(theFile){
-        res.send('上传成功！');
+        res.send('上传成功！' + targetUserId);
+
+        //推送數據到指定用戶
       });
     });
   }else
