@@ -29,7 +29,6 @@ app.post('/upload', function(req, res) {
             });
             theFile.save().then(function(theFile) {
 
-                return res.send('上传成功！文件ID為 : ' + theFile.id);
                 //推送數據到指定用戶
                 var query = new AV.Query("_Installation");
                 query.equalTo("userId", targetUserId);
@@ -44,7 +43,7 @@ app.post('/upload', function(req, res) {
                     }
                 });
 
-                // res.send('上传成功！文件ID為 : ' + theFile.get("objectId"));
+                return res.send('上传成功！文件ID為 : ' + theFile.id);
             });
         });
     } else
