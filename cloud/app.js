@@ -29,20 +29,20 @@ app.post('/upload', function(req, res) {
             });
             theFile.save().then(function(theFile) {
 
-                return res.send('上传成功！文件ID為 : ');
+                return res.send('上传成功！文件ID為 : ' + theFile.id);
                 //推送數據到指定用戶
-                // var query = new AV.Query("_Installation");
-                // query.equalTo("userId", targetUserId);
-                // AV.Push.send({
-                //     appId: "q77fhkht4neg4ixnybwjnjmodatcoxy4wplq6ocb9lrzy5hs",
-                //     appKey: "vhvdk35bg5p6zsxdsp5boqz2hckljc2djbc7c12834bdj5mv",
-                //     where: query,
-                //     data: {
-                //         action: "cm.action.MESSAGE",
-                //         msg_type: 12,
-                //         content_target_id: theFile.get("objectId")
-                //     }
-                // });
+                var query = new AV.Query("_Installation");
+                query.equalTo("userId", targetUserId);
+                AV.Push.send({
+                    appId: "q77fhkht4neg4ixnybwjnjmodatcoxy4wplq6ocb9lrzy5hs",
+                    appKey: "vhvdk35bg5p6zsxdsp5boqz2hckljc2djbc7c12834bdj5mv",
+                    where: query,
+                    data: {
+                        action: "cm.action.MESSAGE",
+                        msg_type: 12,
+                        content_target_id: theFile.id
+                    }
+                });
 
                 // res.send('上传成功！文件ID為 : ' + theFile.get("objectId"));
             });
