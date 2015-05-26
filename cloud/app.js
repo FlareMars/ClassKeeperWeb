@@ -29,10 +29,13 @@ app.post('/upload', function(req, res) {
             });
             theFile.save().then(function(theFile) {
 
+                return res.send('上传成功！文件ID為 : ' + theFile.get("objectId"));
                 //推送數據到指定用戶
                 var query = new AV.Query("_Installation");
                 query.equalTo("userId", targetUserId);
                 AV.Push.send({
+                    appId: "q77fhkht4neg4ixnybwjnjmodatcoxy4wplq6ocb9lrzy5hs",
+                    appKey: "vhvdk35bg5p6zsxdsp5boqz2hckljc2djbc7c12834bdj5mv",
                     where: query,
                     data: {
                         action: "cm.action.MESSAGE",
@@ -41,7 +44,7 @@ app.post('/upload', function(req, res) {
                     }
                 });
 
-                res.send('上传成功！并推送至用戶 : ' + targetUserId);
+                // res.send('上传成功！文件ID為 : ' + theFile.get("objectId"));
             });
         });
     } else
