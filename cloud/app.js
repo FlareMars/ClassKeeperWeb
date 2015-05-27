@@ -19,7 +19,7 @@ app.get('/hello', function(req, res) {
 
 
 // 启用 cookieParser
-app.use(express.cookieParser());
+app.use(express.cookieParser('shhhh, very secret'));
 // 使用 avos-express-cookie-session 记录登录信息到 cookie
 app.use(avosExpressCookieSession({ cookie: { maxAge: 3600000 }, fetchUser: false}));
 
