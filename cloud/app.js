@@ -2,6 +2,7 @@
 var express = require('express');
 var app = express();
 var targetUser;	
+var avosExpressCookieSession = require('avos-express-cookie-session');
 // App 全局配置
 app.set('views', 'cloud/views'); // 设置模板目录
 app.set('view engine', 'ejs'); // 设置 template 引擎
