@@ -1,7 +1,7 @@
 // 在 Cloud code 里初始化 Express 框架
 var express = require('express');
 var app = express();
-var targetUser;
+var targetUser;	
 // App 全局配置
 app.set('views', 'cloud/views'); // 设置模板目录
 app.set('view engine', 'ejs'); // 设置 template 引擎
@@ -19,10 +19,11 @@ app.post('/login', function(req, res) {
         success: function(user) {
             // Do stuff after successful login.
             targetUser = user;
-            showModelessDialog('登陆成功!');
+            alert('登陆成功!');
         },
         error: function(user, error) {
             // The login failed. Check error to see why.
+            alert('登陆失败!' + error);
         }
     });
 });
