@@ -1,6 +1,11 @@
 // 在 Cloud code 里初始化 Express 框架
 var express = require('express');
 var AV = require('leanengine');
+var process = require('process');
+var app = express();
+
+app.use(AV.Cloud);
+app.listen(process.env.LC_APP_PORT);
 
 var APP_ID = 'q77fhkht4neg4ixnybwjnjmodatcoxy4wplq6ocb9lrzy5hs'; // your app id
 var APP_KEY = 'vhvdk35bg5p6zsxdsp5boqz2hckljc2djbc7c12834bdj5mv'; // your app key
@@ -9,13 +14,17 @@ var MASTER_KEY = '9m2iywlfjdcxyvmlgwxmlxpzxhlfwi7si99ymg2qx6i60rth'; // your app
 AV.initialize(APP_ID, APP_KEY, MASTER_KEY);
 
 
-var app = express();
 var avosExpressCookieSession = require('avos-express-cookie-session');
 // App 全局配置
 app.set('views', 'cloud/views'); // 设置模板目录
 app.set('view engine', 'ejs'); // 设置 template 引擎
 app.use(express.bodyParser()); // 读取请求 body 的中间件
-app.use(AV.Cloud);
+
+
+// 使用 avos-express-cookie-session 记录登录信息到 cookie
+app.use(AV.Cloud.CookieSession({ secret: 'my secret', maxAge: 3600000, fetchUser: true }));
+
+
 // 使用 Express 路由 API 服务 /hello 的 HTTP GET 请求
 app.get('/hello', function(req, res) {
         alert('登陸成功，可以進行文件傳輸操作');
@@ -29,8 +38,6 @@ app.get('/UploadFile', function(req, res) {
     res.render('UploadFile.ejs');
 });
 
-// 使用 avos-express-cookie-session 记录登录信息到 cookie
-app.use(AV.Cloud.CookieSession({ secret: 'my secret', maxAge: 3600000, fetchUser: true }));
 
 app.post('/login', function(req, res) {
     AV.User.logIn(req.body.username, req.body.password).then(function() {
@@ -86,6 +93,3 @@ app.post('/upload', function(req, res) {
     } else
         res.send('请选择一个文件。');
 });
-
-// 最后，必须有这行代码来使 express 响应 HTTP 请求
-app.listen(process.env.LC_APP_PORT);
