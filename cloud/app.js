@@ -17,6 +17,8 @@ app.get('/hello', function(req, res) {
 });
 
 
+app.get('/UploadFile', function(req, res) {
+});
 
 // 启用 cookieParser
 app.use(express.cookieParser('shhhh, very secret'));
