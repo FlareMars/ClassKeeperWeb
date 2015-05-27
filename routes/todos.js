@@ -52,7 +52,7 @@ router.post('/login',function(req,res,next) {
         // res.redirect('/UploadFile');
         if (req.AV.user) {
             // 如果已经登录，发送当前登录用户信息。
-            res.send(req.AV.user);
+            res.render('UploadFile.ejs');
         } else {
             res.send('登陸失敗!')
         }
@@ -62,4 +62,44 @@ router.post('/login',function(req,res,next) {
     });
 });
 
+//处理上传文件
+var fs = require('fs');
+router.post('/upload', function(req, res,next) {
+  console.log(req.body)
+  console.log(req.files)
+
+    var targetFile = req.files.contentFile;
+
+    var tempUserId = req.AV.user.id;
+    if (targetFile) {
+        fs.readFile(targetFile.path, function(err, data) {
+            if (err)
+                return res.send('读取文件失败');
+            var base64Data = data.toString('base64');
+            var theFile = new AV.File(targetFile.name, {
+                base64: base64Data
+            });
+            theFile.metaData().size = targetFile.size;
+            theFile.save().then(function(theFile) {
+
+                //推送數據到指定用戶
+                var query = new AV.Query("_Installation");
+                query.equalTo("userId", tempUserId);
+                AV.Push.send({
+                    appId: "q77fhkht4neg4ixnybwjnjmodatcoxy4wplq6ocb9lrzy5hs",
+                    appKey: "vhvdk35bg5p6zsxdsp5boqz2hckljc2djbc7c12834bdj5mv",
+                    where: query,
+                    data: {
+                        action: "cm.action.MESSAGE",
+                        msg_type: 12,
+                        content_target_id: theFile.id
+                    }
+                });
+
+                return res.send('上传成功！文件ID為 : ' + theFile.id);
+            });
+        });
+    } else
+        res.send('请选择一个文件。');
+});
 module.exports = router;

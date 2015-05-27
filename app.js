@@ -1,4 +1,5 @@
 var express = require('express');
+var multer  = require('multer');
 var AV = require('leanengine');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -12,9 +13,17 @@ app.use(AV.Cloud.CookieSession({ secret: 'my secret', maxAge: 3600000, fetchUser
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
-
 // 加载云代码方法
+
 app.use(cloud);
+
+//講上傳的文件傳入req.files中并對上傳的文件進行重命名
+app.use(multer({
+  dest: './uploads/',
+  rename: function (fieldname, filename) {
+    return filename.replace(/\W+/g, '-').toLowerCase() + Date.now()
+  }
+}))
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -59,20 +68,4 @@ app.use(function(err, req, res, next) {
   });
 });
 
-//登陆
-app.post('/login',function(req,res,next) {
-  AV.User.logIn(req.body.username, req.body.password).then(function() {
-        //登录成功，avosExpressCookieSession会自动将登录用户信息存储到cookie
-        // res.redirect('/UploadFile');
-        if (req.AV.user) {
-            // 如果已经登录，发送当前登录用户信息。
-            res.send(req.AV.user);
-        } else {
-            res.send('登陸失敗!')
-        }
-
-    }, function(error) {
-        res.send('登陸失敗!' + error.message + ' ' + error.code);
-    });
-});
 module.exports = app;
