@@ -1,7 +1,6 @@
 // 在 Cloud code 里初始化 Express 框架
 var express = require('express');
 var app = express();
-var targetUserId = "";	
 var avosExpressCookieSession = require('avos-express-cookie-session');
 // App 全局配置
 app.set('views', 'cloud/views'); // 设置模板目录
@@ -29,7 +28,6 @@ app.use(avosExpressCookieSession({ cookie: { maxAge: 3600000 }, fetchUser: false
 app.post('/login', function(req, res) {
     AV.User.logIn(req.body.username, req.body.password).then(function() {
         //登录成功，avosExpressCookieSession会自动将登录用户信息存储到cookie
-        targetUserId = AV.User.current().id;
         res.redirect('/UploadFile');
     }, function(error) {
         res.send('登陸失敗!' + error.message + ' ' + error.code);
@@ -56,7 +54,7 @@ app.post('/upload', function(req, res) {
 
                 //推送數據到指定用戶
                 var query = new AV.Query("_Installation");
-                query.equalTo("userId", req.AV.user.id);
+                query.equalTo("userId", AV.User.current().id);
                 AV.Push.send({
                     appId: "q77fhkht4neg4ixnybwjnjmodatcoxy4wplq6ocb9lrzy5hs",
                     appKey: "vhvdk35bg5p6zsxdsp5boqz2hckljc2djbc7c12834bdj5mv",
