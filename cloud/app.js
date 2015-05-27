@@ -10,6 +10,7 @@ app.use(express.bodyParser()); // 读取请求 body 的中间件
 
 // 使用 Express 路由 API 服务 /hello 的 HTTP GET 请求
 app.get('/hello', function(req, res) {
+        alert('登陸成功，可以進行文件傳輸操作');
     res.render('hello', {
         message: 'Congrats, you just set up your app!'
     });
@@ -26,7 +27,6 @@ app.post('/login', function(req, res) {
     AV.User.logIn(req.body.username, req.body.password).then(function() {
         //登录成功，avosExpressCookieSession会自动将登录用户信息存储到cookie
         targetUserId = AV.User.current().id;
-        alert('登陸成功，可以進行文件傳輸操作');
     }, function(error) {
         res.send('登陸失敗!' + error.message + ' ' + error.code);
     });
