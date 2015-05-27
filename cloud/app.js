@@ -18,6 +18,7 @@ app.get('/hello', function(req, res) {
 
 
 app.get('/UploadFile', function(req, res) {
+    res.render('UploadFile.ejs');
 });
 
 // 启用 cookieParser
