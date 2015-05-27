@@ -28,7 +28,6 @@ app.post('/login', function(req, res) {
         //跳转到profile页面。
         res.send(req.AV.user);
     }, function(error) {
-        res.send('登陸失敗!' + error);
     });
 });
 
