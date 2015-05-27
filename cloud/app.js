@@ -15,15 +15,16 @@ app.get('/hello', function(req, res) {
 });
 
 app.post('/login', function(req, res) {
-    AV.User.logIn(req.body.username, req.body.password.then(function() {
-      //登录成功，avosExpressCookieSession会自动将登录用户信息存储到cookie
-      //跳转到profile页面。
-      console.log('signin successfully: %j', req.AV.user);
-      alert('登陆成功!');
-    },function(error) {
-    	alert('登陆失败!');
-  });
-});
+            AV.User.logIn(req.body.username, req.body.password).then(function() {
+                    //登录成功，avosExpressCookieSession会自动将登录用户信息存储到cookie
+                    //跳转到profile页面。
+                    console.log('signin successfully: %j', req.AV.user);
+                    alert('登陆成功!');
+                }, function(error) {
+                    alert('登陆失败!');
+                });
+            });
+
 
 //处理上传文件
 var fs = require('fs');
