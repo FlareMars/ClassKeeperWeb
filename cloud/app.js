@@ -1,6 +1,13 @@
 // 在 Cloud code 里初始化 Express 框架
 var express = require('express');
 var AV = require('leanengine');
+
+var APP_ID = process.env.LC_APP_ID || ''; // your app id
+var APP_KEY = process.env.LC_APP_KEY || ''; // your app key
+var MASTER_KEY = process.env.LC_APP_MASTER_KEY || ''; // your app master key
+
+AV.initialize(APP_ID, APP_KEY, MASTER_KEY);
+
 var app = express();
 var avosExpressCookieSession = require('avos-express-cookie-session');
 // App 全局配置
@@ -46,7 +53,7 @@ var fs = require('fs');
 app.post('/upload', function(req, res) {
     var targetFile = req.files.contentFile;
 
-    var tempUserId = targetUserId;
+    var tempUserId = req.AV.user.id;
     if (targetFile) {
         fs.readFile(targetFile.path, function(err, data) {
             if (err)
