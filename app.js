@@ -59,4 +59,20 @@ app.use(function(err, req, res, next) {
   });
 });
 
+//登陆
+app.post('/login',function(req,res,next) {
+  AV.User.logIn(req.body.username, req.body.password).then(function() {
+        //登录成功，avosExpressCookieSession会自动将登录用户信息存储到cookie
+        // res.redirect('/UploadFile');
+        if (req.AV.user) {
+            // 如果已经登录，发送当前登录用户信息。
+            res.send(req.AV.user);
+        } else {
+            res.send('登陸失敗!')
+        }
+
+    }, function(error) {
+        res.send('登陸失敗!' + error.message + ' ' + error.code);
+    });
+});
 module.exports = app;
