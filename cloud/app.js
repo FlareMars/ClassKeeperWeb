@@ -2,9 +2,9 @@
 var express = require('express');
 var AV = require('leanengine');
 
-var APP_ID = process.env.LC_APP_ID || ''; // your app id
-var APP_KEY = process.env.LC_APP_KEY || ''; // your app key
-var MASTER_KEY = process.env.LC_APP_MASTER_KEY || ''; // your app master key
+var APP_ID = 'q77fhkht4neg4ixnybwjnjmodatcoxy4wplq6ocb9lrzy5hs'; // your app id
+var APP_KEY = 'vhvdk35bg5p6zsxdsp5boqz2hckljc2djbc7c12834bdj5mv'; // your app key
+var MASTER_KEY = '9m2iywlfjdcxyvmlgwxmlxpzxhlfwi7si99ymg2qx6i60rth'; // your app master key
 
 AV.initialize(APP_ID, APP_KEY, MASTER_KEY);
 
