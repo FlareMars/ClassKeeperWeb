@@ -16,7 +16,7 @@ app.get('/hello', function(req, res) {
 
 app.post('/login', function(req, res) {
 
-    alert('登陆 : ' + req.body.username + ' ' + req.body.password);
+    console.log('登陆 : ' + req.body.username + ' ' + req.body.password);
     AV.User.logIn(req.body.username, req.body.password).then(function() {
         //登录成功，avosExpressCookieSession会自动将登录用户信息存储到cookie
         //跳转到profile页面。
@@ -24,7 +24,7 @@ app.post('/login', function(req, res) {
         // alert('登陆成功!');
         res.send(req.AV.user);
     }, function(error) {
-        alert('登陆失败!');
+    	
     });
 });
 
