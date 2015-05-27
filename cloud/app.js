@@ -14,17 +14,20 @@ app.get('/hello', function(req, res) {
     });
 });
 
-app.post('/login', function(req, res) {
 
-    console.log('登陆 : ' + req.body.username + ' ' + req.body.password);
+
+// 启用 cookieParser
+app.use(express.cookieParser('MD5'));
+// 使用 avos-express-cookie-session 记录登录信息到 cookie
+app.use(avosExpressCookieSession({ cookie: { maxAge: 3600000 }, fetchUser: true}));
+
+app.post('/login', function(req, res) {
     AV.User.logIn(req.body.username, req.body.password).then(function() {
         //登录成功，avosExpressCookieSession会自动将登录用户信息存储到cookie
         //跳转到profile页面。
-        console.log('signin successfully: %j', req.AV.user);
-        // alert('登陆成功!');
         res.send(req.AV.user);
     }, function(error) {
-    	
+        res.send('登陸失敗!');
     });
 });
 
