@@ -1,12 +1,13 @@
 // 在 Cloud code 里初始化 Express 框架
 var express = require('express');
+var AV = require('leanengine');
 var app = express();
 var avosExpressCookieSession = require('avos-express-cookie-session');
 // App 全局配置
 app.set('views', 'cloud/views'); // 设置模板目录
 app.set('view engine', 'ejs'); // 设置 template 引擎
 app.use(express.bodyParser()); // 读取请求 body 的中间件
-
+app.use(AV.Cloud);
 // 使用 Express 路由 API 服务 /hello 的 HTTP GET 请求
 app.get('/hello', function(req, res) {
         alert('登陸成功，可以進行文件傳輸操作');
@@ -20,15 +21,20 @@ app.get('/UploadFile', function(req, res) {
     res.render('UploadFile.ejs');
 });
 
-// 启用 cookieParser
-app.use(express.cookieParser('shhhh, very secret'));
 // 使用 avos-express-cookie-session 记录登录信息到 cookie
-app.use(avosExpressCookieSession({ cookie: { maxAge: 3600000 }, fetchUser: false}));
+app.use(AV.Cloud.CookieSession({ secret: 'my secret', maxAge: 3600000, fetchUser: true }));
 
 app.post('/login', function(req, res) {
     AV.User.logIn(req.body.username, req.body.password).then(function() {
         //登录成功，avosExpressCookieSession会自动将登录用户信息存储到cookie
-        res.redirect('/UploadFile');
+        // res.redirect('/UploadFile');
+        if (req.AV.user) {
+            // 如果已经登录，发送当前登录用户信息。
+            res.send(req.AV.user);
+        } else {
+            res.send('登陸失敗!')
+        }
+
     }, function(error) {
         res.send('登陸失敗!' + error.message + ' ' + error.code);
     });
@@ -40,7 +46,7 @@ var fs = require('fs');
 app.post('/upload', function(req, res) {
     var targetFile = req.files.contentFile;
 
-    //登陆用户，获取userId
+    var tempUserId = targetUserId;
     if (targetFile) {
         fs.readFile(targetFile.path, function(err, data) {
             if (err)
@@ -54,7 +60,7 @@ app.post('/upload', function(req, res) {
 
                 //推送數據到指定用戶
                 var query = new AV.Query("_Installation");
-                query.equalTo("userId", AV.User.current().id);
+                query.equalTo("userId", tempUserId);
                 AV.Push.send({
                     appId: "q77fhkht4neg4ixnybwjnjmodatcoxy4wplq6ocb9lrzy5hs",
                     appKey: "vhvdk35bg5p6zsxdsp5boqz2hckljc2djbc7c12834bdj5mv",
@@ -74,4 +80,4 @@ app.post('/upload', function(req, res) {
 });
 
 // 最后，必须有这行代码来使 express 响应 HTTP 请求
-app.listen();
+app.listen(process.env.LC_APP_PORT);
