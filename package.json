@@ -1,6 +1,7 @@
 {
   "name": "ClassKeeperWeb",
   "version": "1.0.0",
+  "repository": "git@github.com:FlareMars/ClassKeeperWeb.git",
   "description": "ClassKeeperWeb Simple Server",
   "main": "server.js",
   "scripts": {
