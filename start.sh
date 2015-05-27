@@ -1,6 +1,6 @@
-export LC_APP_ID=q77fhkht4neg4ixnybwjnjmodatcoxy4wplq6ocb9lrzy5hs
-export LC_APP_KEY=vhvdk35bg5p6zsxdsp5boqz2hckljc2djbc7c12834bdj5mv
-export LC_APP_MASTER_KEY=9m2iywlfjdcxyvmlgwxmlxpzxhlfwi7si99ymg2qx6i60rth
+export LC_APP_ID='q77fhkht4neg4ixnybwjnjmodatcoxy4wplq6ocb9lrzy5hs'
+export LC_APP_KEY='vhvdk35bg5p6zsxdsp5boqz2hckljc2djbc7c12834bdj5mv'
+export LC_APP_MASTER_KEY='9m2iywlfjdcxyvmlgwxmlxpzxhlfwi7si99ymg2qx6i60rth'
 export LC_APP_PORT=3000
 
 npm start
