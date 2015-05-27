@@ -1,11 +1,9 @@
 // 在 Cloud code 里初始化 Express 框架
 var express = require('express');
 var AV = require('leanengine');
-var process = require('process');
 var app = express();
 
 app.use(AV.Cloud);
-app.listen(process.env.LC_APP_PORT);
 
 var APP_ID = 'q77fhkht4neg4ixnybwjnjmodatcoxy4wplq6ocb9lrzy5hs'; // your app id
 var APP_KEY = 'vhvdk35bg5p6zsxdsp5boqz2hckljc2djbc7c12834bdj5mv'; // your app key
