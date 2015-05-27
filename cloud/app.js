@@ -18,9 +18,9 @@ app.get('/hello', function(req, res) {
 
 
 // 启用 cookieParser
-app.use(express.cookieParser('MD5'));
+app.use(express.cookieParser());
 // 使用 avos-express-cookie-session 记录登录信息到 cookie
-app.use(avosExpressCookieSession({ cookie: { maxAge: 3600000 }, fetchUser: true}));
+app.use(avosExpressCookieSession({ cookie: { maxAge: 3600000 }, fetchUser: false}));
 
 app.post('/login', function(req, res) {
     AV.User.logIn(req.body.username, req.body.password).then(function() {
