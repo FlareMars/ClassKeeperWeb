@@ -27,6 +27,7 @@ app.post('/login', function(req, res) {
     AV.User.logIn(req.body.username, req.body.password).then(function() {
         //登录成功，avosExpressCookieSession会自动将登录用户信息存储到cookie
         targetUserId = AV.User.current().id;
+        res.redirect('/UploadFile');
     }, function(error) {
         res.send('登陸失敗!' + error.message + ' ' + error.code);
     });
