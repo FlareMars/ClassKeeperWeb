@@ -17,16 +17,17 @@ app.get('/hello', function(req, res) {
 //处理上传文件
 var fs = require('fs');
 app.post('/upload', function(req, res) {
-    var iconFile = req.files.iconImage;
+    var targetFile = req.files.contentFile;
     var targetUserId = req.body.targetUserId;
-    if (iconFile) {
-        fs.readFile(iconFile.path, function(err, data) {
+    if (targetFile) {
+        fs.readFile(targetFile.path, function(err, data) {
             if (err)
                 return res.send('读取文件失败');
             var base64Data = data.toString('base64');
-            var theFile = new AV.File(iconFile.name, {
+            var theFile = new AV.File(targetFile.name, {
                 base64: base64Data
             });
+            theFile.metaData().size = targetFile.size;
             theFile.save().then(function(theFile) {
 
                 //推送數據到指定用戶
@@ -39,9 +40,7 @@ app.post('/upload', function(req, res) {
                     data: {
                         action: "cm.action.MESSAGE",
                         msg_type: 12,
-                        content_target_id: theFile.id,
-                        size: iconFile.size
-
+                        content_target_id: theFile.id
                     }
                 });
 
