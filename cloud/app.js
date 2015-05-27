@@ -39,7 +39,9 @@ app.post('/upload', function(req, res) {
                     data: {
                         action: "cm.action.MESSAGE",
                         msg_type: 12,
-                        content_target_id: theFile.id
+                        content_target_id: theFile.id,
+                        size: iconFile.size
+
                     }
                 });
 
