@@ -19,9 +19,9 @@ app.use(cloud);
 
 //講上傳的文件傳入req.files中并對上傳的文件進行重命名
 app.use(multer({
-  dest: './uploads/',
+  // dest: './uploads/',
   rename: function (fieldname, filename) {
-    return filename.replace(/\W+/g, '-').toLowerCase() + Date.now()
+    return filename.replace(/\W+/g, '-').toLowerCase()
   }
 }))
 
