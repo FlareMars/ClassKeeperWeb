@@ -15,17 +15,14 @@ app.get('/hello', function(req, res) {
 });
 
 app.post('/login', function(req, res) {
-    AV.User.logIn(req.body.username, req.body.password, {
-        success: function(user) {
-            // Do stuff after successful login.
-            targetUser = user;
-            alert('登陆成功!');
-        },
-        error: function(user, error) {
-            // The login failed. Check error to see why.
-            alert('登陆失败!' + error);
-        }
-    });
+    AV.User.logIn(req.body.username, req.body.password.then(function() {
+      //登录成功，avosExpressCookieSession会自动将登录用户信息存储到cookie
+      //跳转到profile页面。
+      console.log('signin successfully: %j', req.AV.user);
+      alert('登陆成功!');
+    },function(error) {
+    	alert('登陆失败!');
+  });
 });
 
 //处理上传文件
