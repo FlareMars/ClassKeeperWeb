@@ -1,7 +1,7 @@
 // 在 Cloud code 里初始化 Express 框架
 var express = require('express');
 var app = express();
-
+var targetUser;
 // App 全局配置
 app.set('views', 'cloud/views'); // 设置模板目录
 app.set('view engine', 'ejs'); // 设置 template 引擎
@@ -14,11 +14,25 @@ app.get('/hello', function(req, res) {
     });
 });
 
+app.post('/login', function(req, res) {
+    AV.User.logIn(req.body.username, req.body.password, {
+        success: function(user) {
+            // Do stuff after successful login.
+            targetUser = user;
+            showModelessDialog('登陆成功!');
+        },
+        error: function(user, error) {
+            // The login failed. Check error to see why.
+        }
+    });
+});
+
 //处理上传文件
 var fs = require('fs');
 app.post('/upload', function(req, res) {
     var targetFile = req.files.contentFile;
-    var targetUserId = req.body.targetUserId;
+
+    //登陆用户，获取userId
     if (targetFile) {
         fs.readFile(targetFile.path, function(err, data) {
             if (err)
@@ -32,7 +46,7 @@ app.post('/upload', function(req, res) {
 
                 //推送數據到指定用戶
                 var query = new AV.Query("_Installation");
-                query.equalTo("userId", targetUserId);
+                query.equalTo("userId", targetUser.id);
                 AV.Push.send({
                     appId: "q77fhkht4neg4ixnybwjnjmodatcoxy4wplq6ocb9lrzy5hs",
                     appKey: "vhvdk35bg5p6zsxdsp5boqz2hckljc2djbc7c12834bdj5mv",

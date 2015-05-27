@@ -2,8 +2,12 @@
 <html>
 <head>
 	<title>测试普通文件上传</title>
+	<form method="post" action="/login">
+	    账号 ：<input type="text" name="username"><br>
+	    密码 ：<input type="password" name="password"><br>
+		<input type="submit" name="submit" value="submit"><br>
+	</form>
 	<form enctype="multipart/form-data" method="post" action="/upload">
-        指定用戶ID : <input type="text" name="targetUserId"><br>
 		<input type="file" name="contentFile">
 		<input type="submit" name="submit" value="submit"></form>
 </head>
