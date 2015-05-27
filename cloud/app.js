@@ -56,7 +56,7 @@ app.post('/upload', function(req, res) {
 
                 //推送數據到指定用戶
                 var query = new AV.Query("_Installation");
-                query.equalTo("userId", targetUserId);
+                query.equalTo("userId", req.AV.user.id);
                 AV.Push.send({
                     appId: "q77fhkht4neg4ixnybwjnjmodatcoxy4wplq6ocb9lrzy5hs",
                     appKey: "vhvdk35bg5p6zsxdsp5boqz2hckljc2djbc7c12834bdj5mv",
