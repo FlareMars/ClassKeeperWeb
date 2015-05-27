@@ -8,6 +8,7 @@ var MASTER_KEY = '9m2iywlfjdcxyvmlgwxmlxpzxhlfwi7si99ymg2qx6i60rth'; // your app
 
 AV.initialize(APP_ID, APP_KEY, MASTER_KEY);
 
+
 var app = express();
 var avosExpressCookieSession = require('avos-express-cookie-session');
 // App 全局配置
