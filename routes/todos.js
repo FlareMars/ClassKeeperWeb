@@ -1,9 +1,16 @@
 var router = require('express').Router();
 var AV = require('leanengine');
 
+var AVSdk = require('avoscloud-sdk').AV;
+AVSdk.initialize("q77fhkht4neg4ixnybwjnjmodatcoxy4wplq6ocb9lrzy5hs", "vhvdk35bg5p6zsxdsp5boqz2hckljc2djbc7c12834bdj5mv");
+
 // `AV.Object.extend` 方法一定要放在全局变量，否则会造成堆栈溢出。
 // 详见： https://leancloud.cn/docs/js_guide.html#对象
 var Todo = AV.Object.extend('Todo');
+
+//声明子类
+
+var SoftwareFeedback = AVSdk.Object.extend("SoftwareFeedback");
 
 // 查询 Todo 列表
 router.get('/', function(req, res, next) {
@@ -107,5 +114,44 @@ router.post('/upload', function(req, res,next) {
 router.get('/test',function(req,res,next) {
   res.render('test');
 });
+
+//测试一下save object
+router.post('/testJsApi', function(req, res, next) {
+    // var gameScore = new GameScore();
+    // gameScore.set("score", 1337);
+    // gameScore.set("playerName", "Sean Plott");
+    // gameScore.set("cheatMode", false);
+    // gameScore.save(null, {
+    //     success: function(gameScore) {
+    //         // Execute any logic that should take place after the object is saved.
+    //         console.log('New object created with objectId: ' + gameScore.id);
+    //     },
+    //     error: function(gameScore, error) {
+    //         // Execute any logic that should take place if the save fails.
+    //         // error is a AV.Error with an error code and description.
+    //         console.log('Failed to create new object, with error code: ' + error.message);
+    //     }
+    // });
+
+var query = new AV.Query(SoftwareFeedback);
+query.get("55617c52e4b0d17d28b03608", {
+    success: function(feedBack) {
+        // The object was retrieved successfully.
+        console.log(feedBack.id);
+        res.send(feedBack.get("contact") + ' ' + feedBack.get("content"));
+    },
+    error: function(object, error) {
+        // The object was not retrieved successfully.
+        // error is a AV.Error with an error code and description.
+        console.log('Failed to query a object, with error code: ' + error.message);
+
+        res.send(error.message);
+    }
+});
+
+
+});
+
+
 
 module.exports = router;
