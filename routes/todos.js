@@ -102,4 +102,10 @@ router.post('/upload', function(req, res,next) {
     } else
         res.send('请选择一个文件。');
 });
+
+//跳转到测试页
+router.get('/test',function(req,res,next) {
+  res.render('test');
+});
+
 module.exports = router;
